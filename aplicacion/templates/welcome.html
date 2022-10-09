@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Link Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container my-5 bg-light p-4">
+        <h1>Bienvenid@ {{session['usuario_nombre']}}!</h1>
+        <div class="row align-items-center">
+            <div class="col-9">
+                <h2 >Todas las recetas posteadas</h2>
+            </div>
+            <div class="col-3 d-flex justify-content-between p-4 ">
+                <a href="/cerrar_sesión">Cerrar Sesion</a>
+                <a href="/nueva_receta">Crear receta</a>
+            </div>
+        </div>
+        <div>
+            <table class="table table-dark table-striped">
+                <tr>
+                    <th>Titulo</th>
+                    <th>Duración menor a 30 min</th>
+                    <th>Creada por</th>
+                    <th>Action</th>
+                </tr>
+                {% for receta_con_usuario in todas_las_recetas: %}
+                    <tr>
+                        <td>{{receta_con_usuario['titulo']}}</td>
+                        <!-- DURACION: Mostrar la info segun si o no , envez de 1 o 0: -->
+                        {% if receta_con_usuario['duracion'] =="1": %}
+                            <td>Sí</td>
+                        {% else:%}
+                            <td>No</td>
+                        {% endif %}
+                        <td>{{receta_con_usuario['nombre']}} {{receta_con_usuario['apellido']}}</td>
+                        <!--MOSTRAR ACCIONES SEGUN SESION ID-->
+                        {% if session['usuario_id'] == receta_con_usuario['usuario_id']:%}
+                            <td>
+                                <a href="/receta/{{receta_con_usuario['id']}}">VER</a> |
+                                <a href="/receta/{{receta_con_usuario['id']}}/editar"> EDITAR </a> |
+                                <a href="/receta/{{receta_con_usuario['id']}}/eliminar"> ELIMINAR </a>
+                            </td>
+                        {% else: %}
+                            <td>
+                                <a href="/receta/{{receta_con_usuario['id']}}">VER</a>
+                            </td>
+                        {% endif %}                    
+                    </tr>
+                {% endfor %}
+                    
+
+                <!--Aca tiene que ir el for para cada receta-->
+                <!--tiene que tener un if si es creador de la receta o no-->
+
+            </table>
+        </div>
+    </div>
+    
+    <!--Link Boostrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>  
+</body>
+</html>
