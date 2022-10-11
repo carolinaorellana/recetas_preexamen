@@ -1,6 +1,7 @@
 from aplicacion.config.mysqlconnection import connectToMySQL #siempre importar la conección con la base de datos
 from flask import flash
 from aplicacion import app
+from aplicacion.models.usuario import Usuario
 
 class Receta:
 
@@ -16,6 +17,8 @@ class Receta:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.usuario_id = data['usuario_id']
+        self.usuario = []
+
 
     #insertar una receta:
     @classmethod
@@ -45,7 +48,14 @@ class Receta:
         consulta = "SELECT * FROM recetas JOIN usuarios ON recetas.usuario_id = usuarios.id"
         resultado= connectToMySQL (cls.base_datos).query_db(consulta)
         # print(resultado, "ESTO ES LO QUE TENGO QUE LEER")
-        return resultado
+        todas_las_recetas_con_usuarios = []
+        for receta in resultado:
+            objeto_receta = cls(receta)
+            objeto_receta.usuario.append(Usuario(receta))
+            todas_las_recetas_con_usuarios.append(objeto_receta)
+        # print (todas_las_recetas_con_usuarios, "ESTO ESTOY IMPRIMIENDO AL LLAMAR a todas las recetas")
+        return todas_las_recetas_con_usuarios 
+
     
     #Eliminar receta
     @classmethod

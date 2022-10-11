@@ -30,14 +30,14 @@
                 </tr>
                 {% for receta_con_usuario in todas_las_recetas: %}
                     <tr>
-                        <td>{{receta_con_usuario['titulo']}}</td>
+                        <td>{{receta_con_usuario.titulo}}</td>
                         <!-- DURACION: Mostrar la info segun si o no , envez de 1 o 0: -->
-                        {% if receta_con_usuario['duracion'] =="1": %}
+                        {% if receta_con_usuario.duracion =="1": %}
                             <td>Sí</td>
                         {% else:%}
                             <td>No</td>
                         {% endif %}
-                        <td>{{receta_con_usuario['nombre']}} {{receta_con_usuario['apellido']}}</td>
+                        <td>{{receta_con_usuario.usuario[0].nombre}} {{receta_con_usuario.usuario[0].apellido}}</td>
                         <!--MOSTRAR ACCIONES SEGUN SESION ID-->
                         {% if session['usuario_id'] == receta_con_usuario['usuario_id']:%}
                             <td>
